@@ -1,0 +1,55 @@
+#install scaleIO gateway for deploy
+
+yum -y install java-1.8.0-openjdk* net-tools openssl
+
+GATEWAY_ADMIN_PASSWORD=liyang@008 rpm -U EMC-ScaleIO-gateway-3.0-200.104.x86_64.rpm
+
+
+https://ip  user:admin passwd:liyang@008
+
+#access MDM node with scli or GUI
+
+yum -y install bash-completion
+
+scli --login --username admin --password liyang@008
+
+scli --logout
+
+scli --add_sds_device --sds_ip 192.168.80.16 --protection_domain_name default --storage_pool_name default --device_path /dev/vdb
+
+scli --add_volume --protection_domain_name default --storage_pool_name default --size_gb 300 --volume_name vol01
+
+scli --map_volume_to_sdc --volume_name vol01 -allow_multi_map --sdc_ip 192.168.80.23
+scli --map_volume_to_sdc --volume_name vol01 -allow_multi_map --sdc_ip 192.168.80.24
+scli --map_volume_to_sdc --volume_name vol01 -allow_multi_map --sdc_ip 192.168.80.25
+
+scli --query_volume --volume_name vol01
+
+fdisk -l |grep scini #on sdc node
+
+scli --unmap_volume_from_sdc --volume_name vol01 --sdc_ip 192.168.100.25
+
+scli --remove_volume --volume_name vol01
+
+scli --query_all
+
+scli --query_all | grep -i total
+
+scli --query_cluster
+
+scli --query_all_sds
+
+scli --query_all_sdc
+
+scli --query_all_vol
+
+#add sds with scli before install sds sdc rpm on centos7
+scli --add_sds --sds_ip 192.168.100.21 --sds_ip_role all --protection_domain_name default --sds_name SDS_192.168.100.21
+scli --add_sds_device --sds_ip 192.168.100.21 --protection_domain_name default --storage_pool_name default --device_path /dev/vdb
+
+#edit csv file install for gateway role
+IPs,Password,Operating System,Is MDM/TB,Is SDS,SDS Storage Device List,Is SDC,Virtual IPs,Virtual IP NICs
+192.168.100.16,liyang,linux,Master,Yes,/dev/vdb,Yes,192.168.100.25,eth1
+192.168.100.17,liyang,linux,Slave,Yes,/dev/vdb,Yes,192.168.100.25,eth1
+192.168.100.18,liyang,linux,TB,Yes,/dev/vdb,Yes,,
+
