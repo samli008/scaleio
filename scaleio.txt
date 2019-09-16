@@ -24,9 +24,9 @@ scli --add_sds_device --sds_ip 192.168.80.16 --protection_domain_name default --
 
 scli --add_volume --protection_domain_name default --storage_pool_name default --size_gb 300 --volume_name vol01
 
-scli --map_volume_to_sdc --volume_name vol01 -allow_multi_map --sdc_ip 192.168.80.23
-scli --map_volume_to_sdc --volume_name vol01 -allow_multi_map --sdc_ip 192.168.80.24
-scli --map_volume_to_sdc --volume_name vol01 -allow_multi_map --sdc_ip 192.168.80.25
+scli --map_volume_to_sdc --volume_name vol01 --allow_multi_map --sdc_ip 192.168.80.23
+scli --map_volume_to_sdc --volume_name vol01 --allow_multi_map --sdc_ip 192.168.80.24
+scli --map_volume_to_sdc --volume_name vol01 --allow_multi_map --sdc_ip 192.168.80.25
 
 scli --query_volume --volume_name vol01
 
