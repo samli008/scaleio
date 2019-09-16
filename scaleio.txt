@@ -4,7 +4,6 @@ yum -y install java-1.8.0-openjdk* net-tools openssl
 
 GATEWAY_ADMIN_PASSWORD=liyang@008 rpm -U EMC-ScaleIO-gateway-3.0-200.104.x86_64.rpm
 
-
 https://ip  user:admin passwd:liyang@008
 
 #access MDM node with scli or GUI
