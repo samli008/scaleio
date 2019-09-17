@@ -48,9 +48,25 @@ scli --query_all_sdc
 
 scli --query_all_vol
 
-#add sds with scli before install sds sdc rpm on centos7
+#on sds node
+rpm -ivh EMC-ScaleIO-sds-3.0-200.104.el7.x86_64
+systemctl status sds
+
+#on mdm node
 scli --add_sds --sds_ip 192.168.100.21 --sds_ip_role all --protection_domain_name default --sds_name SDS_192.168.100.21
 scli --add_sds_device --sds_ip 192.168.100.21 --protection_domain_name default --storage_pool_name default --device_path /dev/vdb
+scli --query_all_sds
+
+#on sdc node
+rpm -ivh EMC-ScaleIO-lia-3.0-200.104.el7.x86_64
+rpm -ivh EMC-ScaleIO-sdc-3.0-200.104.el7.x86_64
+systemctl stop scini
+systemctl start scini
+
+#on mdm node
+scli --query_all_sdc
+scli --remove_sdc --sdc_id 5e281d0c00000005
+scli --add_sdc --sdc_ip 192.168.100.27
 
 #edit csv file install for gateway role
 IPs,Password,Operating System,Is MDM/TB,Is SDS,SDS Storage Device List,Is SDC,Virtual IPs,Virtual IP NICs
