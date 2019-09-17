@@ -64,6 +64,7 @@ rpm -ivh EMC-ScaleIO-sdc-3.0-200.104.el7.x86_64
 cat >> /etc/emc/scaleio/drv_cfg.txt << EOF
 mdm 192.168.100.20
 EOF
+systemctl restart scini
 systemctl stop scini
 systemctl start scini
 
