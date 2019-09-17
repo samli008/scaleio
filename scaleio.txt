@@ -56,10 +56,14 @@ systemctl status sds
 scli --add_sds --sds_ip 192.168.100.21 --sds_ip_role all --protection_domain_name default --sds_name SDS_192.168.100.21
 scli --add_sds_device --sds_ip 192.168.100.21 --protection_domain_name default --storage_pool_name default --device_path /dev/vdb
 scli --query_all_sds
+scli --remove_sds --sds_ip 192.168.100.21
 
 #on sdc node
 rpm -ivh EMC-ScaleIO-lia-3.0-200.104.el7.x86_64
 rpm -ivh EMC-ScaleIO-sdc-3.0-200.104.el7.x86_64
+cat >> /etc/emc/scaleio/drv_cfg.txt << EOF
+mdm 192.168.100.20
+EOF
 systemctl stop scini
 systemctl start scini
 
