@@ -18,7 +18,10 @@ ssh $tb "MDM_ROLE_IS_MANAGER=0 rpm -ivh $dir/EMC-ScaleIO-mdm-3.0-200.104.el7.x86
 scli --create_mdm_cluster --master_mdm_ip $mdm --cluster_virtual_ip $vip --master_mdm_name $cluster --master_mdm_virtual_ip_interface $int
 
 scli --login --username admin --password admin
+echo "default ole passwd is admin"
+echo "new passwd pls input liyang@008"
 scli --set_password
+scli --logout
 scli --login --username admin --password liyang@008
 
 scli --add_standby_mdm --new_mdm_ip $slave --mdm_role manager --new_mdm_virtual_ip_interface $int
@@ -27,3 +30,7 @@ scli --switch_cluster_mode --add_slave_mdm_ip $slave --add_tb_ip $tb --cluster_m
 
 scli --add_protection_domain --protection_domain_name $protection
 scli --add_storage_pool --storage_pool_name $pool --protection_domain_name $protection --media_type HDD
+scli --query_cluster
+scli --logout
+echo "scli --login --username admin --password liyang@008" >> login
+scp login $slave:/root/
