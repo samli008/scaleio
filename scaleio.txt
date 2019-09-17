@@ -1,4 +1,4 @@
-#Deploy scaleIO with web from gateway node 
+# Deploy scaleIO with web from gateway node 
 
 yum -y install java-1.8.0-openjdk* net-tools openssl
 
@@ -14,34 +14,35 @@ EMC-ScaleIO-sds-3.0-200.104.el7.x86_64
 
 yum -y install bash-completion openssl mutt
 
-#Deploy scaleIO single node cluster with scli and extend to 3_nodes cluster
+# install EMC-ScaleIO-gui-3.0-200.104.msi on windows host access mdm VIP
 
-#MDM_ROLE_IS_MANAGER=1 for mdm role on two mdm nodes
+# Deploy scaleIO single node cluster with scli and extend to 3_nodes cluster
+
+# MDM_ROLE_IS_MANAGER=1 for mdm role on two mdm nodes
 MDM_ROLE_IS_MANAGER=1 rpm -ivh EMC-ScaleIO-mdm-3.0-200.104.el7.x86_64.rpm 
 
-#MDM_ROLE_IS_MANAGER=0 for tb role on tb node
+# MDM_ROLE_IS_MANAGER=0 for tb role on tb node
 MDM_ROLE_IS_MANAGER=0 rpm -ivh EMC-ScaleIO-mdm-3.0-200.104.el7.x86_64.rpm 
 
 scli --create_mdm_cluster --master_mdm_ip 192.168.100.21 --cluster_virtual_ip 192.168.100.20 --master_mdm_name cluster1 --master_mdm_virtual_ip_interface eth1
 
-#default user and password is admin
+# default user and password is admin
 scli --login --username admin --password admin 
 scli --set_password
 scli --login --username admin --password liyang@008
 
-#create standby node
+# create standby node
 scli --add_standby_mdm --new_mdm_ip 192.168.100.22 --mdm_role manager --new_mdm_virtual_ip_interface eth1
 scli --add_standby_mdm --new_mdm_ip 192.168.100.23 --mdm_role tb
 
-#switch cluster mode 1_node to 3_node
+# switch cluster mode 1_node to 3_node
 scli --switch_cluster_mode --add_slave_mdm_ip 192.168.100.22 --add_tb_ip 192.168.100.23 --cluster_mode 3_node
 
-#create protection domain and storage pool
+# create protection domain and storage pool
 scli --add_protection_domain --protection_domain_name liyang
 scli --add_storage_pool --storage_pool_name liyang --protection_domain_name liyang --media_type HDD
 
-#access MDM node with scli or GUI
-
+# access MDM node with scli or GUI
 
 scli --login --username admin --password liyang@008
 
@@ -75,17 +76,17 @@ scli --query_all_sdc
 
 scli --query_all_vol
 
-#on sds node
+# on sds node
 rpm -ivh EMC-ScaleIO-sds-3.0-200.104.el7.x86_64
 systemctl status sds
 
-#on mdm node
+# on mdm node
 scli --add_sds --sds_ip 192.168.100.21 --sds_ip_role all --protection_domain_name default --sds_name SDS_192.168.100.21
 scli --add_sds_device --sds_ip 192.168.100.21 --protection_domain_name default --storage_pool_name default --device_path /dev/vdb
 scli --query_all_sds
 scli --remove_sds --sds_ip 192.168.100.21
 
-#on sdc node
+# on sdc node
 rpm -ivh EMC-ScaleIO-lia-3.0-200.104.el7.x86_64
 rpm -ivh EMC-ScaleIO-sdc-3.0-200.104.el7.x86_64
 cat >> /etc/emc/scaleio/drv_cfg.txt << EOF
@@ -95,12 +96,12 @@ systemctl restart scini
 systemctl stop scini
 systemctl start scini
 
-#on mdm node
+# on mdm node
 scli --query_all_sdc
 scli --remove_sdc --sdc_id 5e281d0c00000005
 scli --add_sdc --sdc_ip 192.168.100.27
 
-#edit csv file install for gateway role
+# edit csv file install for gateway role
 IPs,Password,Operating System,Is MDM/TB,Is SDS,SDS Storage Device List,Is SDC,Virtual IPs,Virtual IP NICs
 192.168.100.16,liyang,linux,Master,Yes,/dev/vdb,Yes,192.168.100.25,eth1
 192.168.100.17,liyang,linux,Slave,Yes,/dev/vdb,Yes,192.168.100.25,eth1
