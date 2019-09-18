@@ -1,4 +1,10 @@
+scaleIO three role node: mdm sds sdc
+mdm three role node: mdm-master mdm-slave tie-breaker
+
 1. create mdm 3_node cluster
-2. add sds node and add sds device
-3. add sdc node
-4. add volume and mapping to sdc node
+2. add sds data node to protection domain
+3. add sds raw disk device to storage domain
+4. add sdc client node
+5. add volume and mapping to sdc client node
+
+All storage role can be stacked.
