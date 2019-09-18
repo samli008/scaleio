@@ -15,7 +15,7 @@ ssh $mdm "MDM_ROLE_IS_MANAGER=1 rpm -ivh $dir/EMC-ScaleIO-mdm-3.0-200.104.el7.x8
 ssh $slave "MDM_ROLE_IS_MANAGER=1 rpm -ivh $dir/EMC-ScaleIO-mdm-3.0-200.104.el7.x86_64.rpm" 
 ssh $tb "MDM_ROLE_IS_MANAGER=0 rpm -ivh $dir/EMC-ScaleIO-mdm-3.0-200.104.el7.x86_64.rpm" 
 
-scli --create_mdm_cluster --master_mdm_ip $mdm --cluster_virtual_ip $vip --master_mdm_name $cluster --master_mdm_virtual_ip_interface $int
+scli --create_mdm_cluster --master_mdm_ip $mdm --cluster_virtual_ip $vip --master_mdm_name $cluster --master_mdm_virtual_ip_interface $int --accept_license
 
 scli --login --username admin --password admin
 echo "default ole passwd is admin"
