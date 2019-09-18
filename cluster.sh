@@ -1,3 +1,18 @@
+#!/bin/bash
+clear
+echo
+echo "-----The scaleIO auto install 3_node cluster with cli-------"
+echo
+echo "-----Make sure mdm node ssh trusted slave tb node-----------"
+echo "-----Make sure mdm slave tb node in /etc/hosts configured---"
+echo "-----Make sure scaleio soft folder in /root/----------------"
+echo
+
+if [ ! -d "/root/scaleio" ];then
+	echo "sorry /root/scaleio software folder not exist installer exit !"
+	exit 1
+fi
+
 read -p "pls input mdm node ip: " mdm
 read -p "pls input cluster name: " cluster
 read -p "pls input cluster vip: " vip
@@ -15,9 +30,13 @@ ssh $mdm "MDM_ROLE_IS_MANAGER=1 rpm -ivh $dir/EMC-ScaleIO-mdm-3.0-200.104.el7.x8
 ssh $slave "MDM_ROLE_IS_MANAGER=1 rpm -ivh $dir/EMC-ScaleIO-mdm-3.0-200.104.el7.x86_64.rpm" 
 ssh $tb "MDM_ROLE_IS_MANAGER=0 rpm -ivh $dir/EMC-ScaleIO-mdm-3.0-200.104.el7.x86_64.rpm" 
 
+ssh $mdm "rpm -ivh $dir/bash-completion-2.1-6.el7.noarch.rpm"
+ssh $slave "rpm -ivh $dir/bash-completion-2.1-6.el7.noarch.rpm"
+
 scli --create_mdm_cluster --master_mdm_ip $mdm --cluster_virtual_ip $vip --master_mdm_name $cluster --master_mdm_virtual_ip_interface $int --accept_license
 
 sleep 5
+
 scli --login --username admin --password admin
 scli --set_password --old_password admin --new_password liyang@008
 scli --logout
