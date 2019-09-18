@@ -19,7 +19,6 @@ scli --create_mdm_cluster --master_mdm_ip $mdm --cluster_virtual_ip $vip --maste
 
 scli --login --username admin --password admin
 scli --set_password --old_password admin --new_password liyang@008
-scli --logout
 scli --login --username admin --password liyang@008
 
 scli --add_standby_mdm --new_mdm_ip $slave --mdm_role manager --new_mdm_virtual_ip_interface $int
