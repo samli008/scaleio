@@ -48,7 +48,7 @@ scli --login --username admin --password liyang@008
 
 scli --logout
 
-scli --add_sds_device --sds_ip 192.168.80.16 --protection_domain_name default --storage_pool_name default --device_path /dev/vdb
+scli --add_sds_device --sds_ip 192.168.80.16 --storage_pool_name default --device_path /dev/vdb
 
 scli --add_volume --protection_domain_name default --storage_pool_name default --size_gb 300 --volume_name vol01
 
