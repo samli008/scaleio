@@ -5,7 +5,7 @@ echo "-----The scaleIO auto install 3_node cluster with cli-------"
 echo
 echo "-----Make sure mdm node ssh trusted slave tb node-----------"
 echo "-----Make sure mdm slave tb node in /etc/hosts configured---"
-echo "-----Make sure scaleio soft folder in /root/----------------"
+echo "-----Make sure /root/scaleio soft folder exist -------------"
 echo
 
 if [ ! -d "/root/scaleio" ];then
@@ -19,9 +19,10 @@ read -p "pls input cluster vip: " vip
 read -p "pls input vip interface: " int 
 read -p "pls input slave node ip: " slave
 read -p "pls input tb node ip: " tb
-read -p "pls input scaleio software dir[/root/scaleio]: " dir
 read -p "pls input protection domain name: " protection
 read -p "pls input storage pool name: " pool
+
+dir="/root/scaleio"
 
 scp -r $dir $slave:/root/
 scp -r $dir $tb:/root/
