@@ -3,7 +3,7 @@ read -p "pls input 1 to map or 0 to unmap: " map
 
 if [ $map == 1 ];then
 scli --query_all_sdc
-scli --query_all_vol |grep -i not
+scli --query_all_vol |grep -i unmapped
 read -p "pls input vol name: " name
 read -p "pls input sdc ip: " ip
 scli --map_volume_to_sdc --volume_name $name --allow_multi_map --sdc_ip $ip
