@@ -27,12 +27,12 @@ dir="/root/scaleio"
 scp -r $dir $slave:/root/
 scp -r $dir $tb:/root/
 
-ssh $mdm "MDM_ROLE_IS_MANAGER=1 rpm -ivh $dir/EMC-ScaleIO-mdm-3.0-200.104.el7.x86_64.rpm" 
-ssh $slave "MDM_ROLE_IS_MANAGER=1 rpm -ivh $dir/EMC-ScaleIO-mdm-3.0-200.104.el7.x86_64.rpm" 
-ssh $tb "MDM_ROLE_IS_MANAGER=0 rpm -ivh $dir/EMC-ScaleIO-mdm-3.0-200.104.el7.x86_64.rpm" 
+ssh $mdm "MDM_ROLE_IS_MANAGER=1 rpm -ivh $dir/mdm.rpm" 
+ssh $slave "MDM_ROLE_IS_MANAGER=1 rpm -ivh $dir/mdm.rpm" 
+ssh $tb "MDM_ROLE_IS_MANAGER=0 rpm -ivh $dir/mdm.rpm" 
 
-ssh $mdm "rpm -ivh $dir/bash-completion-2.1-6.el7.noarch.rpm"
-ssh $slave "rpm -ivh $dir/bash-completion-2.1-6.el7.noarch.rpm"
+ssh $mdm "rpm -ivh $dir/bash-completion.rpm"
+ssh $slave "rpm -ivh $dir/bash-completion.rpm"
 
 scli --create_mdm_cluster --master_mdm_ip $mdm --cluster_virtual_ip $vip --master_mdm_name $cluster --master_mdm_virtual_ip_interface $int --accept_license
 
@@ -48,7 +48,7 @@ scli --add_standby_mdm --new_mdm_ip $tb --mdm_role tb
 scli --switch_cluster_mode --add_slave_mdm_ip $slave --add_tb_ip $tb --cluster_mode 3_node
 
 scli --add_protection_domain --protection_domain_name $protection
-scli --add_storage_pool --storage_pool_name $pool --protection_domain_name $protection --media_type HDD
+scli --add_storage_pool --storage_pool_name $pool --protection_domain_name $protection
 scli --query_cluster
 scli --logout
 echo "scli --login --username admin --password liyang@008" >> login

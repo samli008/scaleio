@@ -3,9 +3,7 @@ scli --query_all_sdc
 read -p "pls input sdc ip: " ip
 read -p "pls input mdm vip: " vip
 ssh $ip rpm -ivh /root/scaleio/sdc.rpm
-ssh $ip rpm -ivh /root/scaleio/lia.rpm
-ssh $ip "echo mdm $vip >> /etc/emc/scaleio/drv_cfg.txt"
-ssh $ip systemctl restart scini
 sleep 5
-scli --add_sdc --sdc_ip $ip
+ssh $ip "/bin/emc/scaleio/drv_cfg --add_mdm --ip $vip"
 scli --query_all_sdc
+ssh $ip "/bin/emc/scaleio/drv_cfg --query_version"

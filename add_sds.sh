@@ -3,7 +3,8 @@ scli --query_all_sds
 read -p "pls input add sds node ip: " sds
 read -p "pls input protection domain name: " protection
 
-ssh $sds "rpm -ivh /root/scaleio/EMC-ScaleIO-sds-3.0-200.104.el7.x86_64.rpm"
+ssh $sds "rpm -ivh /root/scaleio/sds.rpm"
+ssh $sds "rpm -ivh /root/scaleio/lia.rpm"
 
 sleep 5
 
