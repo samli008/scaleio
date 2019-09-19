@@ -5,5 +5,6 @@ read -p "pls input mdm vip: " vip
 ssh $ip rpm -ivh /root/scaleio/sdc.rpm
 sleep 5
 ssh $ip "/bin/emc/scaleio/drv_cfg --add_mdm --ip $vip"
+ssh $ip "echo mdm $vip >> /bin/emc/scaleio/drv_cfg.txt"
 scli --query_all_sdc
 ssh $ip "/bin/emc/scaleio/drv_cfg --query_version"
