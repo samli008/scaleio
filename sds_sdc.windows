@@ -1,4 +1,8 @@
 # on windows node install sds_sdc role and configure raw driver
+mdm.msi
+msiexec /i mdm.msi MDM_ROLE_IS_MANAGER=1  
+#use cli not scli in windows cmd create mdm cluster
+
 sds.msi
 get-disk
 Initialize-Disk -Number 1
