@@ -1,0 +1,35 @@
+# on windows node install sds_sdc role and configure raw driver
+sds.msi
+get-disk
+Initialize-Disk -Number 1
+New-Partition -DiskNumber 1  -AssignDriveLetter -UseMaximumSize
+get-volume
+
+sdc.msi
+cd "Program Files\EMC\scaleio\sdc\bin"
+drv_cfg --add_mdm --ip 192.168.80.100
+
+# on linux mdm node add sds sdc
+
+scli --login --username admin --password liyang@008
+scli --query_all_sds
+read -p "pls input add sds node ip: " ip
+read -p "pls input protection domain name: " protection
+scli --add_sds --sds_ip $ip --sds_ip_role all --protection_domain_name $protection --sds_name SDS_$ip
+scli --query_all_sds
+
+scli --add_sdc --sdc_ip $ip
+scli --query_all_sdc
+
+# on linux mdm node add sds_device
+
+scli --login --username admin --password liyang@008
+scli --query_all_sds
+read -p "pls input sds ip: " ip
+read -p "pls input storage pool name: " pool
+echo "SDS_IP $ip has devices: "
+scli --query_sds_device_info --sds_ip $ip --all_devices |grep Original |awk '{print $3}'
+read -p "pls input new sds device name[E]: " block
+
+scli --add_sds_device --sds_ip $ip --storage_pool_name $pool --device_path $block
+scli --query_sds_device_info --sds_ip $ip --all_devices |grep Original |awk '{print $3}'
